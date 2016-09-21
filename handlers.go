@@ -12,6 +12,10 @@ func index(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
+	if r.URL.Path != "/" {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
 	fmt.Fprintln(w, `echod(1): HTTP Request & Response Service, a Go fork of httpbin.
 
 Endpoint
