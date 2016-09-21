@@ -12,7 +12,11 @@ func index(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	fmt.Fprintln(w, "echod(1): HTTP Request & Response Service, a Go fork of httpbin.")
+	fmt.Fprintln(w, `echod(1): HTTP Request & Response Service, a Go fork of httpbin.
+
+Endpoint
+	/ This page.
+	/ip Returns Origin IP.`)
 }
 
 func ip(w http.ResponseWriter, r *http.Request) {
@@ -20,9 +24,8 @@ func ip(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	fmt.Printf("%s\n", r.RemoteAddr)
+	w.Header().Set("Content-Type", "application/json")
 	ip := r.RemoteAddr[:strings.LastIndexByte(r.RemoteAddr, ':')]
-	fmt.Printf("%s\n", ip)
 	resp := map[string]interface{}{
 		"origin": ip,
 	}
