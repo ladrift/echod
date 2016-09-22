@@ -8,14 +8,6 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-	if r.URL.Path != "/" {
-		w.WriteHeader(http.StatusNotFound)
-		return
-	}
 	fmt.Fprintln(w, `echod(1): HTTP Request & Response Service, a Go fork of httpbin.
 
 Endpoint
@@ -24,10 +16,6 @@ Endpoint
 }
 
 func ip(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
 	w.Header().Set("Content-Type", "application/json")
 	ip := r.RemoteAddr[:strings.LastIndexByte(r.RemoteAddr, ':')]
 	resp := map[string]interface{}{

@@ -11,8 +11,27 @@ var addr = flag.String("http", "localhost:2333", "HTTP service address (e.g., ':
 
 func main() {
 	flag.Parse()
-	http.HandleFunc("/", index)
-	http.HandleFunc("/ip", ip)
+	// Index page
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+		if r.Method != "GET" {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		index(w, r)
+	})
+	// Returns origin IP
+	http.HandleFunc("/ip", func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != "GET" {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+			return
+		}
+		ip(w, r)
+	})
+
 	if err := http.ListenAndServe(*addr, nil); err != nil {
 		log.Fatalf("start echod failed: %v", err)
 		flag.Usage()
